@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Player;
 use App\Service\PlayerServiceInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,8 @@ class PlayerController extends AbstractController
 {
     private PlayerServiceInterface $playerService;
 
-    public function __construct(PlayerServiceInterface $playerService) {
+    public function __construct(PlayerServiceInterface $playerService)
+    {
         $this->playerService = $playerService;
     }
 

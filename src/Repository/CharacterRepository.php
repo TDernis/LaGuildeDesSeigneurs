@@ -19,14 +19,16 @@ class CharacterRepository extends ServiceEntityRepository
         parent::__construct($registry, Character::class);
     }
 
-    public function findOneByIdentifier($identifier){
+    public function findOneByIdentifier($identifier)
+    {
         return $this->createQueryBuilder('p')
             ->select('p', 'c')
             ->leftJoin('p.player', 'c')
             ->where('p.identifier = :identifier')
             ->setParameter('identifier', $identifier)
             ->getQuery()
-            ->getOneOrNullResult();}
+            ->getOneOrNullResult();
+    }
 
 
     // /**

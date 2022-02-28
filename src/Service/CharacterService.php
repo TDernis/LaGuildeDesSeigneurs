@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+
 class CharacterService implements CharacterServiceInterface
 {
     private $em;
@@ -33,7 +34,8 @@ class CharacterService implements CharacterServiceInterface
         $this->validator = $validator;
     }
 
-    public function create(string $data) {
+    public function create(string $data)
+    {
         //Use with {"kind":"Dame","name":"Eldalótë","surname":"Fleur elfique","caste":"Elfe","knowledge":"Arts","intelligence":120,"life":12,"image":"/images/eldalote.jpg"}
         $character = new Character();
         $character
@@ -58,7 +60,7 @@ class CharacterService implements CharacterServiceInterface
     {
         $errors = $this->validator->validate($character);
         if (count($errors) > 0) {
-            throw new UnprocessableEntityHttpException((string) $errors . ' Missing data for Entity -> ' . json_encode($character->toArray()));
+            throw new UnprocessableEntityHttpException((string) $errors . ' Missing data for Entity -> ' . $this->serializeJson($character));
         }
     }
 
@@ -88,26 +90,31 @@ class CharacterService implements CharacterServiceInterface
     /***
      * {@inheritdoc}
      */
-    public function serializeJson($data){
+    public function serializeJson($data)
+    {
         $encoders = new JsonEncoder();
-        $normalizers = new ObjectNormalizer();
         $defaultContext = [
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($data) {
                 return $data->getIdentifier();
             },
         ];
-        $serializer = $normalizers = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
-        return $serializer->serialize($data, 'json');}
+        $normalizers = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
+        $serializer = new Serializer([new DateTimeNormalizer(), $normalizers], [$encoders]);
+        return $serializer->serialize($data, 'json');
+    }
 
 
     public function getAll()
     {
-       return $this->characterRepository->findAll();;
+        return $this->characterRepository->findAll();
+        ;
     }
 
-    public function modify(Character $character, string $data) {
-        $this->submit($character, CharacterType::class, $data);$this->isEntityFilled($character);
-        $character->setModification(New DateTime());
+    public function modify(Character $character, string $data)
+    {
+        $this->submit($character, CharacterType::class, $data);
+        $this->isEntityFilled($character);
+        $character->setModification(new DateTime());
 
         $this->em->persist($character);
         $this->em->flush();
@@ -115,7 +122,8 @@ class CharacterService implements CharacterServiceInterface
         return $character;
     }
 
-    public function delete(Character $character) {
+    public function delete(Character $character)
+    {
         $this->em->remove($character);
         $this->em->flush();
         return true;
@@ -124,7 +132,8 @@ class CharacterService implements CharacterServiceInterface
     public function getImages(int $number, ?string $kind = null)
     {
         $folder = __DIR__ . '/../../public/images/';
-        $finder = new Finder(); $finder
+        $finder = new Finder();
+        $finder
         ->files()
         ->in($folder)
         ->notPath('/cartes/')

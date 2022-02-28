@@ -6,6 +6,7 @@ use App\Entity\Player;
 use App\Form\PlayerType;
 use App\Repository\PlayerRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use LogicException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -53,7 +54,7 @@ class PlayerService implements PlayerServiceInterface
     {
         $errors = $this->validator->validate($player);
         if (count($errors) > 0) {
-            throw new UnprocessableEntityHttpException((string) $errors . ' Missing data for Entity -> ' . json_encode($player->toArray()));
+            throw new UnprocessableEntityHttpException((string) $errors . ' Missing data for Entity -> ' . $this->serializeJson($player));
         }
     }
 
@@ -83,7 +84,8 @@ class PlayerService implements PlayerServiceInterface
     /***
      * {@inheritdoc}
      */
-    public function serializeJson($data){
+    public function serializeJson($data)
+    {
         $encoders = new JsonEncoder();
         $defaultContext = [
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($data) {
@@ -108,7 +110,6 @@ class PlayerService implements PlayerServiceInterface
             ->setLastname('MARTIN')
             ->setEmail('mae311010@gmail.com')
             ->setMirian(0)
-            ->setPlayerId(1)
             ->setModification(new \DateTime());
 
         $this->em->persist($player);
