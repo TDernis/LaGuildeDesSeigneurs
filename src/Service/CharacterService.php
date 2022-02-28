@@ -19,7 +19,7 @@ class CharacterService implements CharacterServiceInterface
     private $formFactory;
     private $validator;
 
-    public function __construct(EntityManagerInterface $em, CharacterRepository $cr,  FormFactoryInterface $formFactory, ValidatorInterface $validator)
+    public function __construct(EntityManagerInterface $em, CharacterRepository $cr, FormFactoryInterface $formFactory, ValidatorInterface $validator)
     {
         $this->em = $em;
         $this->characterRepository = $cr;
@@ -50,8 +50,9 @@ class CharacterService implements CharacterServiceInterface
      */
     public function isEntityFilled(Character $character)
     {
-        $errors = $this->validator->validate($character);if (count($errors) > 0) {
-            throw new UnprocessableEntityHttpException((string) $errors . 'Missing data for Entity -> ' . json_encode($character->toArray()));
+        $errors = $this->validator->validate($character);
+        if (count($errors) > 0) {
+            throw new UnprocessableEntityHttpException((string) $errors . ' Missing data for Entity -> ' . json_encode($character->toArray()));
         }
     }
 
