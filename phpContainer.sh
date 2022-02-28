@@ -1,1 +1,1 @@
-docker exec -it "laguildedesseigneurs_php_1" /bin/sh
+docker exec -it "laguildedesseigneurs-php-1" /bin/sh
