@@ -14,6 +14,9 @@ interface CharacterServiceInterface
     /*** Submits the data to hydrate the object*/
     public function submit(Character $character, $formName, $data);
 
+    /*** Serialize the object(s)*/
+    public function serializeJson($data);
+
     public function modify(Character $character, string $data);
 
     public function getAll();
