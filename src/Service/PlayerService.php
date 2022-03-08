@@ -2,11 +2,16 @@
 
 namespace App\Service;
 
+use App\Entity\Character;
 use App\Entity\Player;
+use App\Event\PlayerEvent;
+use App\Form\CharacterType;
 use App\Form\PlayerType;
 use App\Repository\PlayerRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -22,13 +27,15 @@ class PlayerService implements PlayerServiceInterface
     private PlayerRepository $playerRepository;
     private $formFactory;
     private $validator;
+    private $dispatcher;
 
-    public function __construct(EntityManagerInterface $em, PlayerRepository $cr, FormFactoryInterface $formFactory, ValidatorInterface $validator)
+    public function __construct(EntityManagerInterface $em, PlayerRepository $cr, FormFactoryInterface $formFactory, ValidatorInterface $validator, EventDispatcherInterface $dispatcher)
     {
         $this->em = $em;
         $this->playerRepository = $cr;
         $this->formFactory = $formFactory;
         $this->validator = $validator;
+        $this->dispatcher = $dispatcher;
     }
 
     public function create(string $data): Player
@@ -101,6 +108,21 @@ class PlayerService implements PlayerServiceInterface
     public function getAll(): array
     {
         return $this->playerRepository->findAll();
+    }
+
+    public function modify(Player $player, string $data)
+    {
+        $this->submit($player, PlayerType::class, $data);
+        $this->isEntityFilled($player);
+        $player->setModification(new DateTime());
+
+        $this->em->persist($player);
+        $this->em->flush();
+
+        $event = new PlayerEvent($player);
+        $this->dispatcher->dispatch($event, PlayerEvent::PLAYER_MODIFIED);
+
+        return $player;
     }
 
     public function update(Player $player): Player

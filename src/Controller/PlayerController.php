@@ -169,11 +169,11 @@ class PlayerController extends AbstractController
      * )
      * @OA\Tag(name="Character")
      */
-    #[Route('/player/update/{identifier}', name: 'player_update', requirements: ['identifier' => '^([a-z0-9]{40})$'], methods: ['PUT', 'HEAD'])]
+    #[Route('/player/modify/{identifier}', name: 'player_update', requirements: ['identifier' => '^([a-z0-9]{40})$'], methods: ['PUT', 'HEAD'])]
     public function modify(Request $request, Player $player): Response
     {
         $this->denyAccessUnlessGranted('playerUpdate', $player);
-        $player = $this->playerService->update($request->getContent());
+        $player = $this->playerService->modify($player, $request->getContent());
         return JsonResponse::fromJsonString($this->playerService->serializeJson($player));
     }
 
