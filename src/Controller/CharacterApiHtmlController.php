@@ -30,6 +30,17 @@ class CharacterApiHtmlController extends AbstractController
         ]);
     }
 
+    #[Route('/intelligence/{intelligence}', name: 'character_api_html_intelligence', methods: ['GET'])]
+    public function intelligence(int $intelligence): Response
+    {
+        $response = $this->client->request(
+            'GET',
+            'http://caddy/character/intelligence/'.$intelligence);
+        return $this->render('character_api_html/index.html.twig', [
+            'characters' => $response->toArray()
+        ]);
+    }
+
     #[Route('/new', name: 'character_api_html_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {

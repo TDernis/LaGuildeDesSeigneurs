@@ -138,6 +138,41 @@ class CharacterController extends AbstractController
         return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
     }
 
+    //INDEX
+    /**
+     * Displays Characters that has the same or more intelligence level than selected
+     *
+     * ...
+     *
+     * @OA\Parameter(
+     *     name="number",
+     *     in="path",
+     *     description="min intelligence level",
+     *     required=true
+     * )
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @OA\Schema(
+     *         type="array",
+     *         @OA\Items(ref=@Model(type=Character::class))
+     *     )
+     * )
+     * @OA\Response(
+     *     response=403,
+     *     description="Access denied",
+     * )
+     * @OA\Tag(name="Character")
+     */
+    #[Route('/character/intelligence/{intelligence}', name: 'character_intelligence', methods: ['GET', 'HEAD'])]
+    public function intelligence(int $intelligence): Response
+    {
+        $this->denyAccessUnlessGranted('characterIndex', null);
+        $characters = $this->characterService->getAllByIntelligence($intelligence);
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
+    }
+
     //MODIFY
     /**
      * Modifies the Character

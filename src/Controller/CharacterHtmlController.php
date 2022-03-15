@@ -29,6 +29,15 @@ class CharacterHtmlController extends AbstractController
         ]);
     }
 
+    #[Route('/intelligence/{intelligence}', name: 'app_character_html_intelligence', methods: ['GET'])]
+    public function intelligence(int $intelligence): Response
+    {
+        return $this->render('character_html/index.html.twig', [
+            'characters' => $this->characterService->getAllByIntelligence($intelligence),
+        ]);
+    }
+
+
     #[Route('/new', name: 'app_character_html_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

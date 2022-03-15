@@ -118,7 +118,11 @@ class CharacterService implements CharacterServiceInterface
     public function getAll()
     {
         return $this->characterRepository->findAll();
-        ;
+    }
+
+    public function getAllByIntelligence($intelligence)
+    {
+        return $this->characterRepository->findAllByIntelligence($intelligence);
     }
 
     public function modify(Character $character, string $data)

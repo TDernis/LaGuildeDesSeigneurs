@@ -30,6 +30,16 @@ class CharacterRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findAllByIntelligence($intelligence)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c')
+            ->where('c.intelligence >= :intelligence')
+            ->setParameter('intelligence', $intelligence)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     // /**
     //  * @return Character[] Returns an array of Character objects
