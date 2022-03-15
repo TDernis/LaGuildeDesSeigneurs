@@ -48,6 +48,20 @@ class CharacterControllerTest extends WebTestCase
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
+    public function testDisplayHtmlIntelligence(): void
+    {
+        $this->client->request('GET', '/character/html/intelligence' . self::$intelligence);
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testDisplayApiIntelligence(): void
+    {
+        $this->client->request('GET', '/character/api-html/intelligence/' . self::$intelligence);
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+    }
+
     public function testRedirectIndex(): void
     {
         $this->client->request('GET', '/character');
