@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}player index{% endblock %}
+
+{% block body %}
+    <h1>player index</h1>
+{# Table headers #}
+    <table class="table table-hover">
+        <thead>
+            <tr class="text-center">
+                <th>firstname</th>
+                <th>lastname</th>
+                <th>email</th>
+                <th>mirian</th>
+                <th>Creation</th>
+                {# <th>Modification</th> #}
+            </tr>
+        </thead>
+{# Table contents #}
+        <tbody>
+        {% for player in players %}
+            <tr class="text-center">
+                <td>
+                    <a href="{{ path('player_api_html_show', {'identifier': player.identifier}) }}">{{ player.firstname }}</a>
+            	</td>
+                <td>{{ player.lastname }}</td>
+                <td>{{ player.email }}</td>
+                <td>{{ player.mirian }}</td>
+
+                <td>{{ player.creation ? player.creation|date('d/m/Y') : '' }}</td>
+                <td>{{ player.modification ? player.modification|date('d/m/Y') : '' }}</td>
+                <td>
+                    {# <a href="{{ path('player_api_html_edit', {'identifier': player.identifier}) }}">Modifier</a> #}
+                </td>
+            </tr>
+{# No records found #}
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{# New player #}
+    {# <p class="text-center">
+        <a href="{{ path('player_api_html_new') }}" class="btn btn-primary">Nouveau player</a>
+    </p> #}
+{% endblock %}

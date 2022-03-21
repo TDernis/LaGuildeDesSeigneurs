@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New player{% endblock %}
+
+{% block body %}
+    <h1>Create new player</h1>
+
+    {{ include('player_api_html/_form.html.twig') }}
+
+    <a href="{{ path('player_api_html_index') }}">back to list</a>
+{% endblock %}

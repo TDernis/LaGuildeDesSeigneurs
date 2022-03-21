@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}player{% endblock %}
+
+{% block body %}
+    <h1>player</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ player.id }}</td>
+            </tr>
+            <tr>
+                <th>Identifier</th>
+                <td>{{ player.identifier }}</td>
+            </tr>
+            <tr>
+                <th>firstname</th>
+                <td>{{ player.firstname }}</td>
+            </tr>
+            <tr>
+                <th>lastname</th>
+                <td>{{ player.lastname }}</td>
+            </tr>
+            <tr>
+                <th>email</th>
+                <td>{{ player.email }}</td>
+            </tr>
+            <tr>
+                <th>mirian</th>
+                <td>{{ player.mirian }}</td>
+            </tr>
+            
+            <tr>
+                <th>Creation</th>
+                <td>{{ player.creation ? player.creation|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Modification</th>
+                <td>{{ player.modification ? player.modification|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <h1>Character</h1>
+        <div class="d-flex flex-wrap">
+                {% for character in player.characters %}
+                        {{ include('character_api_html/_show.html.twig') }}
+
+                {% endfor %}
+
+        </div>
+
+
+
+    <a href="{{ path('player_api_html_index') }}">back to list</a>
+
+    {# <a href="{{ path('player_api_html_edit', {'identifier': player.identifier}) }}">edit</a> #}
+
+    {# {{ include('player_api_html/_delete_form.html.twig') }} #}
+{% endblock %}
