@@ -40,4 +40,24 @@ interface CharacterServiceInterface
     public function getImages(int $number, ?string $kind = null);
 
     public function getImagesKind(string $kind, int $number);
+
+    /*
+* Gets the characters by intelligence
+*/
+    public function getByIntelligence( string $data);
+
+    /*
+    * Gets the characters by Life
+    */
+    public function getByLife( string $data);
+
+    /*
+* Gets the characters by Knowledge
+*/
+    public function getByKnowledge( string $data);
+
+    /*
+* Gets the characters by Caste
+*/
+    public function getByCaste( string $data);
 }

@@ -138,38 +138,131 @@ class CharacterController extends AbstractController
         return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
     }
 
-    //INDEX
+    #[Route('/character/intelligence/{intelligence}', name: 'character_index_intelligence', requirements: ["intelligence" => "^([0-9]{1,3})$"], methods: ["GET", "HEAD"])]
     /**
-     * Displays Characters that has the same or more intelligence level than selected
-     *
-     * ...
+     * Display the character by intelligence contained in the url
      *
      * @OA\Parameter(
-     *     name="number",
-     *     in="path",
-     *     description="min intelligence level",
-     *     required=true
-     * )
-     *
-     * @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\Schema(
-     *         type="array",
-     *         @OA\Items(ref=@Model(type=Character::class))
-     *     )
+     *      name="intelligence",
+     *      in="path",
+     *      description="intelligence for the Character",
+     *      required=true,
      * )
      * @OA\Response(
-     *     response=403,
-     *     description="Access denied",
+     *      response=200,
+     *      description="Success",
+     *      @Model(type=Character::class),
+     * )
+     * @OA\Response(
+     *      response=403,
+     *      description="Access denied",
+     * )
+     * @OA\Response(
+     *      response=404,
+     *      description="Not Found",
      * )
      * @OA\Tag(name="Character")
      */
-    #[Route('/character/intelligence/{intelligence}', name: 'character_intelligence', methods: ['GET', 'HEAD'])]
-    public function intelligence(int $intelligence): Response
+    public function indexIntelligence(int $intelligence)
     {
-        $this->denyAccessUnlessGranted('characterIndex', null);
-        $characters = $this->characterService->getAllByIntelligence($intelligence);
+        $this->denyAccessUnlessGranted('characterIntelligence', null);
+        $characters = $this->characterService->getByIntelligence($intelligence);
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
+    }
+
+    #[Route('/character/life/{life}', name: 'character_index_life', requirements: ["life" => "^([0-9]{1,3})$"], methods: ["GET", "HEAD"])]
+    /**
+     * Display the character by life contained in the url
+     *
+     * @OA\Parameter(
+     *      name="life",
+     *      in="path",
+     *      description="life for the Character",
+     *      required=true,
+     * )
+     * @OA\Response(
+     *      response=200,
+     *      description="Success",
+     *      @Model(type=Character::class),
+     * )
+     * @OA\Response(
+     *      response=403,
+     *      description="Access denied",
+     * )
+     * @OA\Response(
+     *      response=404,
+     *      description="Not Found",
+     * )
+     * @OA\Tag(name="Character")
+     */
+    public function indexLife(int $life)
+    {
+        $this->denyAccessUnlessGranted('characterLife', null);
+        $characters = $this->characterService->getByLife($life);
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
+    }
+
+    #[Route('/character/caste/{caste}', name: 'character_index_caste', requirements: ["caste" => "[^/]+"], methods: ["GET", "HEAD"])]
+    /**
+     * Display the character by caste contained in the url
+     *
+     * @OA\Parameter(
+     *      name="caste",
+     *      in="path",
+     *      description="caste for the Character",
+     *      required=true,
+     * )
+     * @OA\Response(
+     *      response=200,
+     *      description="Success",
+     *      @Model(type=Character::class),
+     * )
+     * @OA\Response(
+     *      response=403,
+     *      description="Access denied",
+     * )
+     * @OA\Response(
+     *      response=404,
+     *      description="Not Found",
+     * )
+     * @OA\Tag(name="Character")
+     */
+    public function indexCaste(string $caste)
+    {
+        $this->denyAccessUnlessGranted('characterCaste', null);
+        $characters = $this->characterService->getByCaste($caste);
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
+    }
+
+    #[Route('/character/knowledge/{knowledge}', name: 'character_index_knowledge', requirements: ["knowledge" => "[^/]+"], methods: ["GET", "HEAD"])]
+    /**
+     * Display the character by knowledge contained in the url
+     *
+     * @OA\Parameter(
+     *      name="knowledge",
+     *      in="path",
+     *      description="knowledge for the Character",
+     *      required=true,
+     * )
+     * @OA\Response(
+     *      response=200,
+     *      description="Success",
+     *      @Model(type=Character::class),
+     * )
+     * @OA\Response(
+     *      response=403,
+     *      description="Access denied",
+     * )
+     * @OA\Response(
+     *      response=404,
+     *      description="Not Found",
+     * )
+     * @OA\Tag(name="Character")
+     */
+    public function indexKnowledge(string $knowledge)
+    {
+        $this->denyAccessUnlessGranted('characterKnowledge', null);
+        $characters = $this->characterService->getByKnowledge($knowledge);
         return JsonResponse::fromJsonString($this->characterService->serializeJson($characters));
     }
 

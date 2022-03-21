@@ -27,7 +27,7 @@
                 <td>{{ player.email }}</td>
                 <td>{{ player.mirian }}</td>
 
-                <td>{{ player.creation ? player.creation|date('d/m/Y') : '' }}</td>
+                <td>{{ player.creationDate ? player.creationDate|date('d/m/Y') : '' }}</td>
                 <td>{{ player.modification ? player.modification|date('d/m/Y') : '' }}</td>
                 <td>
                     {# <a href="{{ path('player_api_html_edit', {'identifier': player.identifier}) }}">Modifier</a> #}

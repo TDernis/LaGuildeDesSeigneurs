@@ -40,6 +40,48 @@ class CharacterRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Get all Character and players by life in Character
+     */
+    public function findAllByLife($life)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c','p')
+            ->leftJoin('c.player', 'p')
+            ->where('c.life >= :life')
+            ->setParameter('life', $life)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Get all Character and players by caste in Character
+     */
+    public function findAllByCaste($caste)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c','p')
+            ->leftJoin('c.player', 'p')
+            ->where('c.caste = :caste')
+            ->setParameter('caste', $caste)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Get all Character and players by Knowledge in Character
+     */
+    public function findAllByKnowledge($knowledge)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c','p')
+            ->leftJoin('c.player', 'p')
+            ->where('c.knowledge = :knowledge')
+            ->setParameter('knowledge', $knowledge)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     // /**
     //  * @return Character[] Returns an array of Character objects

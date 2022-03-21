@@ -31,13 +31,55 @@ class CharacterApiHtmlController extends AbstractController
     }
 
     #[Route('/intelligence/{intelligence}', name: 'character_api_html_intelligence', methods: ['GET'])]
-    public function intelligence(int $intelligence): Response
+    public function indexIntelligence(int $intelligence): Response
     {
         $response = $this->client->request(
             'GET',
             'http://caddy/character/intelligence/'.$intelligence);
         return $this->render('character_api_html/index.html.twig', [
             'characters' => $response->toArray()
+        ]);
+    }
+
+    /**
+     * @Route("/life/{life}", name="character_api_html_life",requirements={"life" = "^([0-9]{1,3})$"}, methods={"GET"})
+     */
+    public function indexLife(int $life)
+    {
+        $response = $this->client->request(
+            'GET',
+            'http://localhost:80/character/life/' . $life
+        );
+        return $this->render('character_api_html/index.html.twig', [
+            'characters' => $response->toArray(),
+        ]);
+    }
+
+    /**
+     * @Route("/caste/{caste}", name="character_api_html_caste",requirements={"caste" = "[^/]+"}, methods={"GET"})
+     */
+    public function indexCaste(string $caste)
+    {
+        $response = $this->client->request(
+            'GET',
+            'http://localhost:80/character/caste/' . $caste
+        );
+        return $this->render('character_api_html/index.html.twig', [
+            'characters' => $response->toArray(),
+        ]);
+    }
+
+    /**
+     * @Route("/knowledge/{knowledge}", name="character_api_html_knowledge",requirements={"knowledge" = "[^/]+"}, methods={"GET"})
+     */
+    public function indexKnowledge(string $knowledge)
+    {
+        $response = $this->client->request(
+            'GET',
+            'http://localhost:80/character/knowledge/' . $knowledge
+        );
+        return $this->render('character_api_html/index.html.twig', [
+            'characters' => $response->toArray(),
         ]);
     }
 
